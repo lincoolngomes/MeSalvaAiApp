@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "196845152297",
+    "project_id": "mesalvaai",
+    "storage_bucket": "mesalvaai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196845152297:android:78472c506c1102cc79d438",
+        "android_client_info": {
+          "package_name": "com.mesalvaai.aplicativo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196845152297-oauj2271f1dbio07ufmfj1jg3n5qah0i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mesalvaai.aplicativo",
+            "certificate_hash": "5eea65fb17ca6be670cf6aa6741546caa9dfcc9e"
+          }
+        },
+        {
+          "client_id": "196845152297-vmgt44ig9t3h2139f212klepk5sgo543.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP5uSEgiko243hfWzjjBsqK-vfvik5HRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196845152297-vmgt44ig9t3h2139f212klepk5sgo543.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

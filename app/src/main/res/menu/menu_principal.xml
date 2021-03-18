@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuMetas"
+        android:icon="@drawable/ic_finger"
+        android:orderInCategory="400"
+        android:title="Perfil"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuCalculadora"
+        android:icon="@drawable/ic_calculadora"
+        android:orderInCategory="100"
+        android:title="Calculadora"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuCarteira"
+        android:icon="@drawable/ic_investimento"
+        android:orderInCategory="100"
+        android:title="Investimentos"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menuConfiguracoes"
+        android:orderInCategory="100"
+        android:title="Configuracoes"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/menuSair"
+        android:orderInCategory="200"
+        android:title="Sair"
+        app:showAsAction="never"
+        />
+
+</menu>
