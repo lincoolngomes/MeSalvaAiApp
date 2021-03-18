@@ -54,6 +54,18 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             }
         });
 
+        imageButtonGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
+                if ( i.resolveActivity( getPackageManager() ) != null ){
+                    startActivityForResult( i, SELECAO_GALERIA );
+                }
+
+            }
+        });
+
 
 
 
