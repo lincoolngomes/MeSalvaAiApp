@@ -7,9 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageButton;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.mesalvaai.aplicativo.R;
 import com.mesalvaai.aplicativo.helper.Permissao;
 
@@ -20,6 +25,11 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
 
+    //ButtomImage Foto
+    private ImageButton imageButtonCamera, imageButtonGaleria;
+    private static final int SELECAO_CAMERA = 100;
+    private static final int SELECAO_GALERIA = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +38,21 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         //Validar permissões
         Permissao.validarPermissoes(permissoesNecessarias, this, 1);
 
+        //Botoes foto perfil
+        imageButtonCamera = findViewById(R.id.imageButtonCamera);
+        imageButtonGaleria = findViewById(R.id.imageButtonGaleria);
+
+        imageButtonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if ( i.resolveActivity( getPackageManager() ) != null ){
+                    startActivityForResult( i, SELECAO_CAMERA );
+                }
+
+            }
+        });
 
 
 
