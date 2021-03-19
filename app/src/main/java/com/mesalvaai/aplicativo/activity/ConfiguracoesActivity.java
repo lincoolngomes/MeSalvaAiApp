@@ -21,6 +21,8 @@ import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.mesalvaai.aplicativo.R;
 import com.mesalvaai.aplicativo.helper.Permissao;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ConfiguracoesActivity extends AppCompatActivity {
 
     private String[] permissoesNecessarias = new String[]{
@@ -32,6 +34,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private ImageButton imageButtonCamera, imageButtonGaleria;
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
+    private CircleImageView imagemPerfil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         //Botoes foto perfil
         imageButtonCamera = findViewById(R.id.imageButtonCamera);
         imageButtonGaleria = findViewById(R.id.imageButtonGaleria);
+        imagemPerfil = findViewById(R.id.profile_image);
 
         imageButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +99,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         Uri localImagemSelecionada = data.getData();
                         imagem = MediaStore.Images.Media.getBitmap(getContentResolver(),localImagemSelecionada);
                         break;
+                }
+
+                if ( imagem != null ) {
+                    imagemPerfil.setImageBitmap( imagem );
                 }
 
             }catch (Exception e){
