@@ -16,10 +16,23 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mesalvaai.aplicativo.R;
+import com.mesalvaai.aplicativo.config.ConfiguracaoFirebase;
+import com.mesalvaai.aplicativo.helper.Base64Custom;
 import com.mesalvaai.aplicativo.helper.Permissao;
+import com.mesalvaai.aplicativo.helper.UsuarioFirebase;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,12 +48,18 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
     private CircleImageView imagemPerfil;
+    private StorageReference storageReference;
+    private String identificadorUsuario;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracoes);
+
+        //Configurações iniciais
+        identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario();
+        storageReference = ConfiguracaoFirebase.getFirebaseStorage();
 
         //Validar permissões
         Permissao.validarPermissoes(permissoesNecessarias, this, 1);
@@ -103,6 +122,34 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
                 if ( imagem != null ) {
                     imagemPerfil.setImageBitmap( imagem );
+
+
+                    //Recuperar dados da imagem para o firebase
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos );
+                    byte[] dadosImagem = baos.toByteArray();
+
+
+                    //Salvar imagem no firebase
+                    StorageReference imagemRef = storageReference
+                            .child("imagens")
+                            .child("perfil")
+                            .child( identificadorUsuario )
+                            .child("perfil.jpeg");
+
+                    UploadTask uploadTask = imagemRef.putBytes( dadosImagem );
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ConfiguracoesActivity.this, "Erro ao fazer o upload da imagem", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ConfiguracoesActivity.this, "Sucesso ao fazer o upload da imagem", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                 }
 
             }catch (Exception e){
