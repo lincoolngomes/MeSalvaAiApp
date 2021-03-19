@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -90,8 +91,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         imagem = (Bitmap) data.getExtras().get("data");
                         break;
                     case SELECAO_GALERIA:
-
-
+                        Uri localImagemSelecionada = data.getData();
+                        imagem = MediaStore.Images.Media.getBitmap(getContentResolver(),localImagemSelecionada);
                         break;
                 }
 
