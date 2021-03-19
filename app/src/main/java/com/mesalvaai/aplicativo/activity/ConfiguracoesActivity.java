@@ -37,6 +37,7 @@ import com.mesalvaai.aplicativo.config.ConfiguracaoFirebase;
 import com.mesalvaai.aplicativo.helper.Base64Custom;
 import com.mesalvaai.aplicativo.helper.Permissao;
 import com.mesalvaai.aplicativo.helper.UsuarioFirebase;
+import com.mesalvaai.aplicativo.model.Usuario;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -57,8 +58,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private CircleImageView imagemPerfil;
     private EditText editPerfilNome;
     private ImageView botaoSalvarPerfil;
+
     private StorageReference storageReference;
     private String identificadorUsuario;
+    private Usuario usuarioLogado;
 
 
     @Override
@@ -69,6 +72,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         //Configurações iniciais
         identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario();
         storageReference = ConfiguracaoFirebase.getFirebaseStorage();
+        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
 
         //Validar permissões
         Permissao.validarPermissoes(permissoesNecessarias, this, 1);
@@ -126,6 +130,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 String nome = editPerfilNome.getText().toString();
                 boolean retorno = UsuarioFirebase.atualizarNomeUsuario( nome );
                 if ( retorno ){
+
+                    usuarioLogado.setNome( nome );
+                    usuarioLogado.atualizar();
+
                     Toast.makeText(ConfiguracoesActivity.this, "Nome alterado com sucesso.",Toast.LENGTH_LONG ).show();
                 }
 
@@ -213,7 +221,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     }
 
     public void atualizaFotoUsuario(Uri url){
-        UsuarioFirebase.atualizarFotoUsuario(url);
+        boolean retorno =  UsuarioFirebase.atualizarFotoUsuario(url);
+        if ( retorno ){
+            usuarioLogado.setFoto( url.toString() );
+            usuarioLogado.atualizar();
+
+            Toast.makeText(ConfiguracoesActivity.this,"Sua foto foi alterada.",Toast.LENGTH_LONG).show();
+        }
     }
 
 
