@@ -1,6 +1,7 @@
 package com.mesalvaai.aplicativo.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -28,7 +30,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     //ButtomImage Foto
     private ImageButton imageButtonCamera, imageButtonGaleria;
     private static final int SELECAO_CAMERA = 100;
-    private static final int SELECAO_GALERIA = 100;
+    private static final int SELECAO_GALERIA = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,34 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == RESULT_OK ){
+            Bitmap imagem = null;
+
+            try {
+
+                switch ( requestCode ){
+                    case SELECAO_CAMERA:
+                        imagem = (Bitmap) data.getExtras().get("data");
+                        break;
+                    case SELECAO_GALERIA:
+
+
+                        break;
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
