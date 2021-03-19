@@ -129,6 +129,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                     Toast.makeText(ConfiguracoesActivity.this, "Nome alterado com sucesso.",Toast.LENGTH_LONG ).show();
                 }
 
+
+
             }
         });
 
