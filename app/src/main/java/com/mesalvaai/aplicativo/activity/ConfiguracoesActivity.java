@@ -134,8 +134,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                     StorageReference imagemRef = storageReference
                             .child("imagens")
                             .child("perfil")
-                            .child( identificadorUsuario )
-                            .child("perfil.jpeg");
+                            //.child( identificadorUsuario )
+                            .child(identificadorUsuario + ".jpeg");
 
                     UploadTask uploadTask = imagemRef.putBytes( dadosImagem );
                     uploadTask.addOnFailureListener(new OnFailureListener() {
