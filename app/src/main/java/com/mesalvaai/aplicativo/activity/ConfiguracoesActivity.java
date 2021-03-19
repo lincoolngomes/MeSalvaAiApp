@@ -11,12 +11,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +56,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private static final int SELECAO_GALERIA = 200;
     private CircleImageView imagemPerfil;
     private EditText editPerfilNome;
+    private ImageView botaoSalvarPerfil;
     private StorageReference storageReference;
     private String identificadorUsuario;
 
@@ -75,6 +78,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         imageButtonGaleria = findViewById(R.id.imageButtonGaleria);
         imagemPerfil = findViewById(R.id.profile_image);
         editPerfilNome = findViewById(R.id.editPerfilNome);
+        botaoSalvarPerfil = findViewById(R.id.botaoSalvarPerfil);
 
         //Recuperando dados usuario
         FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
@@ -115,11 +119,25 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         });
 
 
+        botaoSalvarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nome = editPerfilNome.getText().toString();
+                boolean retorno = UsuarioFirebase.atualizarNomeUsuario( nome );
+                if ( retorno ){
+                    Toast.makeText(ConfiguracoesActivity.this, "Nome alterado com sucesso.",Toast.LENGTH_LONG ).show();
+                }
+
+            }
+        });
 
 
 
 
     }
+
+
 
 
     @Override
