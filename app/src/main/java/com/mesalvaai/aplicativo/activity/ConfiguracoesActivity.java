@@ -15,13 +15,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,6 +53,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
     private CircleImageView imagemPerfil;
+    private EditText editPerfilNome;
     private StorageReference storageReference;
     private String identificadorUsuario;
 
@@ -68,6 +74,21 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         imageButtonCamera = findViewById(R.id.imageButtonCamera);
         imageButtonGaleria = findViewById(R.id.imageButtonGaleria);
         imagemPerfil = findViewById(R.id.profile_image);
+        editPerfilNome = findViewById(R.id.editPerfilNome);
+
+        //Recuperando dados usuario
+        FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
+        Uri url = usuario.getPhotoUrl();
+
+        if ( url != null ){
+            Glide.with(ConfiguracoesActivity.this)
+                    .load( url )
+                    .into( imagemPerfil );
+        }else{
+            imagemPerfil.setImageResource(R.drawable.padrao);
+        }
+
+        editPerfilNome.setText( usuario.getDisplayName() );
 
         imageButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +168,17 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(ConfiguracoesActivity.this, "Sucesso ao fazer o upload da imagem", Toast.LENGTH_LONG).show();
+
+
+                            //RECUPERANDO IMAGEM NO FIREBASE
+                            imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Uri url = task.getResult();
+                                    atualizaFotoUsuario( url );
+                                }
+                            });
+
                         }
                     });
 
@@ -158,6 +190,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void atualizaFotoUsuario(Uri url){
+        UsuarioFirebase.atualizarFotoUsuario(url);
     }
 
 

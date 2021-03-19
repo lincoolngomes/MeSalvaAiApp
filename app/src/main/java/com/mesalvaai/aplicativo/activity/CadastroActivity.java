@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.mesalvaai.aplicativo.R;
 import com.mesalvaai.aplicativo.config.ConfiguracaoFirebase;
 import com.mesalvaai.aplicativo.helper.Base64Custom;
+import com.mesalvaai.aplicativo.helper.UsuarioFirebase;
 import com.mesalvaai.aplicativo.model.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class CadastroActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Cadastra-se");
 
-        campoNome = findViewById(R.id.editNome);
+        campoNome = findViewById(R.id.editPerfilNome);
         campoEmail = findViewById(R.id.editEmail);
         campoSenha = findViewById(R.id.editSenha);
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
@@ -64,7 +65,8 @@ public class CadastroActivity extends AppCompatActivity {
                             usuario.setNome(textoNome);
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
-                            cadastrarUsuario();
+
+                            cadastrarUsuario( usuario );
 
                         }else{
                             Toast.makeText(CadastroActivity.this, "Preencha sua senha", Toast.LENGTH_LONG).show();
@@ -84,7 +86,7 @@ public class CadastroActivity extends AppCompatActivity {
 
 
     //Metodo para cadastrar o usuario
-    public void cadastrarUsuario() {
+    public void cadastrarUsuario(Usuario usuario) {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(usuario.getEmail(),usuario.getSenha()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -96,6 +98,8 @@ public class CadastroActivity extends AppCompatActivity {
                     String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
                     usuario.setIdUsuario( idUsuario );
                     usuario.salvar();
+
+                    UsuarioFirebase.atualizarNomeUsuario( usuario.getNome() );
 
 
                     //finish pra depois de criado o usuario ir pra pilha anterior que é intro_cadastro
