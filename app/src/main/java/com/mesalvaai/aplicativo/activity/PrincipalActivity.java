@@ -361,6 +361,7 @@ public class PrincipalActivity extends AppCompatActivity {
                break;
 
            case R.id.menuCarteira:
+               startActivity(new Intent(this, SocialActivity.class));
                //Toast.makeText(this,"Abrindo Carteira de Investimentos", Toast.LENGTH_LONG).show();
                //startActivity(new Intent(this, AplicacoesActivity.class));
                //finish();
